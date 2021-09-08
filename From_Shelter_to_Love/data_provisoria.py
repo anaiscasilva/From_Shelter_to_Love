@@ -22,20 +22,20 @@ def get_data():
     # Sorting all the intakes and outcomes based on Animal ID and DateTime
     df_intakes.sort_values(by = ['Animal ID', 'DateTimeIntake'], ascending = [True, True], inplace = True)
     df_outcomes.sort_values(by = ['Animal ID','DateTimeOutcome'], ascending = [True,True], inplace = True) 
-​
+
     # Dropping all the animals that were more than one time in the shelter
     df_intakes.drop_duplicates(subset = 'Animal ID', inplace = True)
-    df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True)
-​
+    df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True) 
+
     # Merging the datasets
     df_merged = pd.merge(left = df_intakes, right = df_outcomes, how = 'left', on = ['Animal ID'])
     
     # Filtering only dogs
     df_filtered = df_merged[(df_merged['Animal Type'] == 'Dog') | (df_merged['Animal Type'] == 'Cat')].copy()
-​
+
     # Calculating the number of days a dog stays in shelter
     df_filtered['days_in_shelter'] = np.ceil((df_filtered['DateTimeOutcome'] - df_filtered['DateTimeIntake']) / np.timedelta64(24,'h'))
-​
+
     # Dropping all the the negatives values (errors in merging datasets) and null values (dogs that are still in shelter)
     df_filtered = df_filtered[df_filtered.days_in_shelter > 0]
     
@@ -107,7 +107,7 @@ def get_data():
     df_filtered.drop(columns = ['Sex upon Outcome'], inplace = True)
     
     # Defining a function to reduce the number of breeds to mixed and pure
-​
+    
     def breed(df):
         breeds = []
         for breed in df:
