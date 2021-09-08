@@ -127,6 +127,6 @@ def get_data():
             group_colors.append(color_split[0])
         df["group_color"] = group_colors
         return df.reset_index(drop=True)
-    
+    group_color(df_filtered,'Color')
     df_filtered.drop(columns = 'Color', inplace = True)
     return df_filtered
