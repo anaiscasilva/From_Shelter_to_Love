@@ -5,34 +5,34 @@ import re
 # Transforming ages in string to integer in months
 
 def age(df):
-    months = []
-    years = []
+    months_age = []
+    years_age = []
     for age in df:
         if 'years' in age or 'year' in age:
             years = int(re.findall('(-?\d+)',age)[0])
             if years < 0:
-                months.append(np.nan)
-                years.append(np.nan)
+                months_age.append(np.nan)
+                years_age.append(np.nan)
             else:
-                months.append(years*12)
-                years.append(years)
+                months_age.append(years*12)
+                years_age.append(years)
         elif 'months' in age or 'month' in age:
             months = int(re.findall('(-?\d+)',age)[0])
             years = int(re.findall('(-?\d+)',age)[0])
             if months < 0:
-                months.append(np.nan)
+                months_age.append(np.nan)
             else:
-                months.append(months)
-                years.append(1)
+                months_age.append(months)
+                years_age.append(1)
         else:
             weeks_or_days = int(re.findall('(-?\d+)',age)[0])
             if weeks_or_days < 0:
-                months.append(np.nan)
+                months_age.append(np.nan)
             else:
-                months.append(1)
-                years.append(1)
+                months_age.append(1)
+                years_age.append(1)
     
-    return [months, years]
+    return [months_age, years_age]
     
 # Transforming colors in to groups
 
@@ -46,7 +46,7 @@ def group_color(df,column):
 
 
 # Defining functions to see if the animal is neutered/spayed or not and if the animal is male or female
-​
+
 def neutered_animals(df,column):
     animal_neutered = []
     for animal in df[column]:
@@ -58,7 +58,7 @@ def neutered_animals(df,column):
             animal_neutered.append(0)
     df['neutered_or_spayed'] = animal_neutered
     return df.reset_index(drop=True)
-​
+
 def male_animals(df,column):
     male_animal = []
     for animal in df[column]:
@@ -70,10 +70,9 @@ def male_animals(df,column):
             male_animal.append(np.nan)
     df['male_or_female'] = male_animal
     return df.reset_index(drop=True)
-​
 
 # Defining a function to reduce the number of breeds to mixed and pure
-​
+
 def breed(df,column):
     breeds = []
     for breed in df[column]:

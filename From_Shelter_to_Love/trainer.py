@@ -9,7 +9,8 @@ from From_Shelter_to_Love.encoders import age, group_color, neutered_animals, ma
 
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
+def get_data_2():    
     # Get data
     df_intakes, df_outcomes, df_straymap = get_data()
 
@@ -46,9 +47,9 @@ if __name__ == "__main__":
 
     y = df["Days in Shelter"]
     X = df.drop("Days in Shelter", axis=1)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, randomsize = 10)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state = 10)
 
-    
+    return df
 
     # Train and save model, locally and
     #trainer = Trainer(X=X_train, y=y_train)

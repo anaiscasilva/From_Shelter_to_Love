@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import re 
+import re
 
 
 def get_data():
@@ -8,17 +8,17 @@ def get_data():
     df_intakes = pd.read_csv('../raw_data/Austin_Animal_Center_Intakes.csv', parse_dates=['DateTime'])
     df_outcomes = pd.read_csv('../raw_data/Austin_Animal_Center_Outcomes.csv', parse_dates=['DateTime'])
     df_straymap = pd.read_csv('../raw_data/Austin_Animal_Center_Stray_Map.csv')
-    
+
     # Drop Duplicates
     df_intakes.drop_duplicates(inplace = True)
     df_outcomes.drop_duplicates(inplace = True)
-    
+
     #Dropping Irrelevant Features
-    df_intakes.drop(columns = ['Name','MonthYear','Found Location','Sex upon Intake'], inplace = True)
+    df_intakes.drop(columns = ['Name','MonthYear','Found Location'], inplace = True)
     df_intakes.rename(columns = {'DateTime':'DateTimeIntake'}, inplace = True)
     df_outcomes.drop(columns = ['Name','MonthYear','Date of Birth','Breed','Color','Animal Type', 'Outcome Subtype'], inplace = True)
     df_outcomes.rename(columns = {'DateTime':'DateTimeOutcome'}, inplace = True)
-    
+
     # Sorting all the intakes and outcomes based on Animal ID and DateTime
     df_intakes.sort_values(by = ['Animal ID', 'DateTimeIntake'], ascending = [True, True], inplace = True)
     df_outcomes.sort_values(by = ['Animal ID','DateTimeOutcome'], ascending = [True,True], inplace = True) 
@@ -26,10 +26,10 @@ def get_data():
     # Dropping all the animals that were more than one time in the shelter
     df_intakes.drop_duplicates(subset = 'Animal ID', inplace = True)
     df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True)
-
+    
     # Merging the datasets
     df_merged = pd.merge(left = df_intakes, right = df_outcomes, how = 'left', on = ['Animal ID'])
-    
+
     # Filtering only dogs
     df_filtered = df_merged[(df_merged['Animal Type'] == 'Dog') | (df_merged['Animal Type'] == 'Cat')].copy()
 
@@ -38,10 +38,10 @@ def get_data():
 
     # Dropping all the the negatives values (errors in merging datasets) and null values (dogs that are still in shelter)
     df_filtered = df_filtered[df_filtered.days_in_shelter > 0]
-    
+
     #Dropping rows with NaNs
     df_filtered.dropna(inplace = True)
-    
+
     # Transforming ages in string to integer in months
     def dog_age(df):
         dog_months = []
@@ -71,13 +71,13 @@ def get_data():
                     dog_months.append(1)
                     dog_years.append(1)
         return [dog_months, dog_years]
-    
+
     df_filtered['age_upon_intake_months'] = dog_age(df_filtered['Age upon Intake'])[0]
     df_filtered['age_upon_intake_years'] = dog_age(df_filtered['Age upon Intake'])[1]
     df_filtered['age_upon_outcome_months'] = dog_age(df_filtered['Age upon Outcome'])[0]
     df_filtered['age_upon_outcome_years'] = dog_age(df_filtered['Age upon Outcome'])[1]
     df_filtered.drop(columns = ['DateTimeIntake', 'DateTimeOutcome','Age upon Intake', 'Age upon Outcome'], inplace = True)
-    
+
     # Defining functions to see if the animal is neutered/spayed
     def neutered_animals(df):
         animal_neutered = []
@@ -89,7 +89,7 @@ def get_data():
             else:
                 animal_neutered.append(0)
         return animal_neutered
-    
+
     # or not and if the animal is male or female
     def male_animals(df):
         male_animal = []
@@ -101,13 +101,14 @@ def get_data():
             else:
                 male_animal.append(np.nan)
         return male_animal
-    
-    df_filtered['neutered_or_spayed'] = neutered_animals(df_filtered['Sex upon Outcome'])
-    df_filtered['male_or_female'] = male_animals(df_filtered['Sex upon Outcome'])
-    df_filtered.drop(columns = ['Sex upon Outcome'], inplace = True)
-    
-    # Defining a function to reduce the number of breeds to mixed and pure
 
+    df_filtered['neutered_or_spayed_outcome'] = neutered_animals(df_filtered['Sex upon Outcome'])
+    df_filtered['male_or_female_outcome'] = male_animals(df_filtered['Sex upon Outcome'])
+    df_filtered['neutered_or_spayed_intake'] = neutered_animals(df_filtered['Sex upon Intake'])
+    df_filtered['male_or_female_intake'] = male_animals(df_filtered['Sex upon Intake'])
+    df_filtered.drop(columns = ['Sex upon Outcome', 'Sex upon Intake'], inplace = True)
+
+    # Defining a function to reduce the number of breeds to mixed and pure
     def breed(df):
         breeds = []
         for breed in df:
@@ -116,9 +117,9 @@ def get_data():
             else:
                 breeds.append(breed)
         return breeds
-    
+
     df_filtered['Breed'] = breed(df_filtered['Breed'])
-    
+
     # Defining a function to reduce the number of colors
     def group_color(df,column):
         group_colors = []
@@ -127,7 +128,7 @@ def get_data():
             group_colors.append(color_split[0])
         df["group_color"] = group_colors
         return df.reset_index(drop=True)
-        
+  
     group_color(df_filtered,'Color')
     df_filtered.drop(columns = 'Color', inplace = True)
     return df_filtered
