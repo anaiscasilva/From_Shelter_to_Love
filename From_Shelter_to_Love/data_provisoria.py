@@ -14,7 +14,7 @@ def get_data():
     df_outcomes.drop_duplicates(inplace = True)
 
     #Dropping Irrelevant Features
-    df_intakes.drop(columns = ['Name','MonthYear','Found Location','Sex upon Intake'], inplace = True)
+    df_intakes.drop(columns = ['Name','MonthYear','Found Location'], inplace = True)
     df_intakes.rename(columns = {'DateTime':'DateTimeIntake'}, inplace = True)
     df_outcomes.drop(columns = ['Name','MonthYear','Date of Birth','Breed','Color','Animal Type', 'Outcome Subtype'], inplace = True)
     df_outcomes.rename(columns = {'DateTime':'DateTimeOutcome'}, inplace = True)
@@ -102,9 +102,11 @@ def get_data():
                 male_animal.append(np.nan)
         return male_animal
 
-    df_filtered['neutered_or_spayed'] = neutered_animals(df_filtered['Sex upon Outcome'])
-    df_filtered['male_or_female'] = male_animals(df_filtered['Sex upon Outcome'])
-    df_filtered.drop(columns = ['Sex upon Outcome'], inplace = True)
+    df_filtered['neutered_or_spayed_outcome'] = neutered_animals(df_filtered['Sex upon Outcome'])
+    df_filtered['male_or_female_outcome'] = male_animals(df_filtered['Sex upon Outcome'])
+    df_filtered['neutered_or_spayed_intake'] = neutered_animals(df_filtered['Sex upon Intake'])
+    df_filtered['male_or_female_intake'] = male_animals(df_filtered['Sex upon Intake'])
+    df_filtered.drop(columns = ['Sex upon Outcome', 'Sex upon Intake'], inplace = True)
 
     # Defining a function to reduce the number of breeds to mixed and pure
     def breed(df):
