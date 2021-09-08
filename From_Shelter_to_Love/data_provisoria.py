@@ -26,7 +26,11 @@ def get_data():
     # Dropping all the animals that were more than one time in the shelter
     df_intakes.drop_duplicates(subset = 'Animal ID', inplace = True)
     df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 3d8745b8e3f17c0b898760874f6b0f63907a5cfe
     # Merging the datasets
     df_merged = pd.merge(left = df_intakes, right = df_outcomes, how = 'left', on = ['Animal ID'])
 
@@ -128,6 +132,7 @@ def get_data():
             group_colors.append(color_split[0])
         df["group_color"] = group_colors
         return df.reset_index(drop=True)
+  
     group_color(df_filtered,'Color')
     df_filtered.drop(columns = 'Color', inplace = True)
     return df_filtered
