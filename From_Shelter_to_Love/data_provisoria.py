@@ -21,11 +21,11 @@ def get_data():
 
     # Sorting all the intakes and outcomes based on Animal ID and DateTime
     df_intakes.sort_values(by = ['Animal ID', 'DateTimeIntake'], ascending = [True, True], inplace = True)
-    df_outcomes.sort_values(by = ['Animal ID','DateTimeOutcome'], ascending = [True,True], inplace = True)
+    df_outcomes.sort_values(by = ['Animal ID','DateTimeOutcome'], ascending = [True,True], inplace = True) 
 
     # Dropping all the animals that were more than one time in the shelter
     df_intakes.drop_duplicates(subset = 'Animal ID', inplace = True)
-    df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True)
+    df_outcomes.drop_duplicates(subset = 'Animal ID', inplace = True) 
 
     # Merging the datasets
     df_merged = pd.merge(left = df_intakes, right = df_outcomes, how = 'left', on = ['Animal ID'])
@@ -107,7 +107,6 @@ def get_data():
     df_filtered.drop(columns = ['Sex upon Outcome'], inplace = True)
 
     # Defining a function to reduce the number of breeds to mixed and pure
-
     def breed(df):
         breeds = []
         for breed in df:
