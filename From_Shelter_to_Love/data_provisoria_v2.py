@@ -141,3 +141,4 @@ def get_data():
     df_filtered['color'] = colors(df_filtered['Color'])
     df_filtered.drop(columns = 'Color', inplace = True)
     return df_filtered
+
