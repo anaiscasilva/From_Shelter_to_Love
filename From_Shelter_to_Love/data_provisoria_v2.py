@@ -122,21 +122,21 @@ def get_data():
 
     # Defining a function to reduce the number of colors
     def colors(df):
-    colors = []
-    for color in df:
-        if '/' in color:
-            colors.append('Bicolor')
-        elif 'Tricolor' in color or 'Calico' in color or 'Torbie' in color or 'Tortie' in color:
-            colors.append('Tricolor')
-        elif 'Agouti' in color or 'Black' in color or 'Blue' in color or 'Buff' in color or 'Brown' in color \
-        or 'Chocolate' in color or 'Orange' in color or 'Gray' in color or 'Lilac' in color or 'Liver' in color \
-        or 'Orange' in color or 'Red' in color or 'Sable' in color:
-            colors.append('Dark')
-        elif 'Apricot' in color or 'Cream' in color or 'Fawn' in color or 'Flame' in color or 'Gold' in color \
-        or 'Lynx' in color or 'Pink' in color or 'Seal' in color or 'Silver' in color or 'Tan' in color \
-        or 'White' in color or 'Yellow' in color:
-            colors.append('Light')
-    return colors
+        colors = []
+        for color in df:
+            if '/' in color:
+                colors.append('Bicolor')
+            elif 'Tricolor' in color or 'Calico' in color or 'Torbie' in color or 'Tortie' in color:
+                colors.append('Tricolor')
+            elif 'Agouti' in color or 'Black' in color or 'Blue' in color or 'Buff' in color or 'Brown' in color \
+            or 'Chocolate' in color or 'Orange' in color or 'Gray' in color or 'Lilac' in color or 'Liver' in color \
+            or 'Orange' in color or 'Red' in color or 'Sable' in color:
+                colors.append('Dark')
+            elif 'Apricot' in color or 'Cream' in color or 'Fawn' in color or 'Flame' in color or 'Gold' in color \
+            or 'Lynx' in color or 'Pink' in color or 'Seal' in color or 'Silver' in color or 'Tan' in color \
+            or 'White' in color or 'Yellow' in color:
+                colors.append('Light')
+        return colors
   
     df_filtered['color'] = colors(df_filtered['Color'])
     df_filtered.drop(columns = 'Color', inplace = True)
