@@ -1,12 +1,12 @@
-
+import numpy as np
 import pandas as pd
 
 def get_data():
     """method to get the training data (or a portion of it) from google cloud bucket"""
     df_intakes = pd.read_csv('../raw_data/Austin_Animal_Center_Intakes.csv', parse_dates=['DateTime'])
     df_outcomes = pd.read_csv('../raw_data/Austin_Animal_Center_Outcomes.csv', parse_dates=['DateTime', 'Date of Birth'])
-    df_straymap = pd.read_csv('../raw_data/Austin_Animal_Center_Stray_Map.csv')
-    return df_intakes, df_outcomes, df_straymap 
+    #df_straymap = pd.read_csv('../raw_data/Austin_Animal_Center_Stray_Map.csv')
+    return df_intakes, df_outcomes
 
 
 def clean_intakes(df_intakes):
@@ -52,5 +52,8 @@ def cats_and_dogs(df):
     df_cats_and_dogs = df[(df['Animal Type'] == 'Dog') | (df['Animal Type'] == 'Cat')]
     return df_cats_and_dogs
 
-
-
+def compute_age_upon_intake(df):
+    df['age_upon_intake_number_months_number'] = np.ceil((df['DateTime Intake'] - df['Date of Birth'])/np.timedelta64(1, 'M'))
+    df = df[df['age_upon_intake_number_months_number'] > 0]
+    df.dropna(inplace = True)
+    return df
