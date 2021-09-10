@@ -6,7 +6,7 @@ import re
 def get_data():
     # Read CSV
     df_intakes = pd.read_csv('../raw_data/Austin_Animal_Center_Intakes.csv', parse_dates=['DateTime'])
-    df_outcomes = pd.read_csv('../raw_data/Austin_Animal_Center_Outcomes.csv', parse_dates=['DateTime'])
+    df_outcomes = pd.read_csv('../raw_data/Austin_Animal_Center_Outcomes.csv', parse_dates=['DateTime','Date of Birth'])
     df_straymap = pd.read_csv('../raw_data/Austin_Animal_Center_Stray_Map.csv')
 
     # Drop Duplicates
@@ -16,7 +16,7 @@ def get_data():
     #Dropping Irrelevant Features
     df_intakes.drop(columns = ['Name','MonthYear','Found Location'], inplace = True)
     df_intakes.rename(columns = {'DateTime':'DateTimeIntake'}, inplace = True)
-    df_outcomes.drop(columns = ['Name','MonthYear','Date of Birth','Breed','Color','Animal Type', 'Outcome Subtype'], inplace = True)
+    df_outcomes.drop(columns = ['Name','MonthYear','Breed','Color','Animal Type', 'Outcome Subtype'], inplace = True)
     df_outcomes.rename(columns = {'DateTime':'DateTimeOutcome'}, inplace = True)
 
     # Sorting all the intakes and outcomes based on Animal ID and DateTime
@@ -36,6 +36,10 @@ def get_data():
     # Calculating the number of days a dog stays in shelter
     df_filtered['days_in_shelter'] = np.ceil((df_filtered['DateTimeOutcome'] - df_filtered['DateTimeIntake']) / np.timedelta64(24,'h'))
 
+    # Calculating the number age upon intake
+    df_filtered['age_upon_intake_number_months'] = (df_filtered['DateTimeIntake'] - df_filtered['Date of Birth'])/np.timedelta64(1, 'M')
+    df_filtered = df_filtered[df_filtered.age_upon_intake_number_months > 0] 
+    
     # Dropping all the the negatives values (errors in merging datasets) and null values (dogs that are still in shelter)
     df_filtered = df_filtered[df_filtered.days_in_shelter > 0]
 
@@ -140,5 +144,17 @@ def get_data():
   
     df_filtered['color'] = colors(df_filtered['Color'])
     df_filtered.drop(columns = 'Color', inplace = True)
-    return df_filtered
+    
+    # Defining a function to reduce the number of breeds to mixed and pure
+    def Condition(df):
+        conditions = []
+        for condition in df:
+            if 'Normal' in condition:
+                conditions.append('Normal')
+            else:
+                conditions.append('Not-Normal')
+        return conditions
 
+    df_filtered['Intake Condition'] = Condition(df_filtered['Intake Condition'])
+    
+    return df_filtered
