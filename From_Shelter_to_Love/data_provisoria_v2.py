@@ -35,13 +35,12 @@ def get_data():
 
     # Calculating the number of days a dog stays in shelter
     df_filtered['days_in_shelter'] = np.ceil((df_filtered['DateTimeOutcome'] - df_filtered['DateTimeIntake']) / np.timedelta64(24,'h'))
-
-    # Calculating the number age upon intake
-    df_filtered['age_upon_intake_number_months'] = (df_filtered['DateTimeIntake'] - df_filtered['Date of Birth'])/np.timedelta64(1, 'M')
-    df_filtered = df_filtered[df_filtered.age_upon_intake_number_months > 0] 
-    
     # Dropping all the the negatives values (errors in merging datasets) and null values (dogs that are still in shelter)
     df_filtered = df_filtered[df_filtered.days_in_shelter > 0]
+
+    # Calculating the number age upon intake
+    #df_filtered['age_upon_intake_number_months'] = (df_filtered['DateTimeIntake'] - df_filtered['Date of Birth'])/np.timedelta64(1, 'M')
+    #df_filtered = df_filtered[df_filtered.age_upon_intake_number_months > 0] 
 
     #Dropping rows with NaNs
     df_filtered.dropna(inplace = True)
@@ -145,16 +144,16 @@ def get_data():
     df_filtered['color'] = colors(df_filtered['Color'])
     df_filtered.drop(columns = 'Color', inplace = True)
     
-    # Defining a function to reduce the number of breeds to mixed and pure
-    def Condition(df):
-        conditions = []
-        for condition in df:
-            if 'Normal' in condition:
-                conditions.append('Normal')
-            else:
-                conditions.append('Not-Normal')
-        return conditions
+    # Defining a function to reduce the number of intakes
+    #def Condition(df):
+        #conditions = []
+        #for condition in df:
+            #if 'Normal' in condition:
+                #conditions.append('Normal')
+            #else:
+                #conditions.append('Not-Normal')
+        #return conditions
 
-    df_filtered['Intake Condition'] = Condition(df_filtered['Intake Condition'])
+    #df_filtered['Intake Condition'] = Condition(df_filtered['Intake Condition'])
     
     return df_filtered
