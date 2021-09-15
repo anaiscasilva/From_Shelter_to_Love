@@ -80,3 +80,31 @@ deploy_heroku:
 
 run_api:
 	uvicorn api.fast:app --reload  # load web server with code autoreload
+
+# ----------------------------------
+#         Bucket in GCP
+# ----------------------------------
+
+# project id - replace with your GCP project id
+PROJECT_ID=from-shelter-to-love-682
+
+# bucket name - replace with your GCP bucket name
+BUCKET_NAME=from-shelter-to-love-682-silva-roth-matos 
+
+# choose your region from https://cloud.google.com/storage/docs/locations#available_locations
+REGION=europe-west1
+
+set_project:
+	@gcloud config set project ${PROJECT_ID}
+
+create_bucket:
+	@gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
+
+
+##### Package params  - - - - - - - - - - - - - - - - - - -
+
+PACKAGE_NAME=From_Shelter_to_Love
+FILENAME=trainer
+
+run_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
