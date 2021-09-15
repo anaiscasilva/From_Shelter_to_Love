@@ -31,3 +31,5 @@ termcolor
 streamlit
 fastapi
 uvicorn
+imblearn
+xgboost==1.0.1

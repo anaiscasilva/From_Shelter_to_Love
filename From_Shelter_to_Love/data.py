@@ -2,12 +2,13 @@ import numpy as np
 import pandas as pd
 from From_Shelter_to_Love.compute_target import classifier_y0, compute_days_in_shelter
 from From_Shelter_to_Love.encoders import age, neutered_animals, male_animals, breed, colors, compute_age_upon_intake, condition
-
+import os
 
 def get_data():
     """method to get the training data (or a portion of it) from google cloud bucket"""
-    df_intakes = pd.read_csv('../raw_data/Austin_Animal_Center_Intakes.csv', parse_dates=['DateTime'])
-    df_outcomes = pd.read_csv('../raw_data/Austin_Animal_Center_Outcomes.csv', parse_dates=['DateTime', 'Date of Birth'])
+    root_path = os.path.dirname(os.path.dirname(__file__))
+    df_intakes = pd.read_csv(os.path.join(root_path, 'raw_data', 'Austin_Animal_Center_Intakes.csv'), parse_dates=['DateTime'])
+    df_outcomes = pd.read_csv(os.path.join(root_path, 'raw_data', 'Austin_Animal_Center_Outcomes.csv'), parse_dates=['DateTime', 'Date of Birth'])
     #df_straymap = pd.read_csv('../raw_data/Austin_Animal_Center_Stray_Map.csv')
     return df_intakes, df_outcomes
 
@@ -43,11 +44,11 @@ def merge_data(df_intakes, df_outcomes):
     return df_merged
 
 def only_dogs(df):
-    df_only_dogs = df[df['Animal Type'] == 'Dog'].copy()
+    df_only_dogs = df[df['animal_type'] == 'Dog'].copy()
     return df_only_dogs
 
 def only_cats(df):  
-    df_only_cats = df[df['Animal Type'] == 'Cat'].copy()
+    df_only_cats = df[df['animal_type'] == 'Cat'].copy()
     return df_only_cats
 
 def cats_and_dogs(df):
@@ -93,6 +94,10 @@ def final_data():
  
     df = df[['Intake Type','Animal Type','Intake Condition',
             'Breed','age_upon_intake_months', 'neutered_or_spayed_intake',
-            'male_or_female_intake','color']]
+            'male_or_female_intake','color', 'target']]
+
+    df.columns=['intake_type','animal_type','intake_condition',
+            'breed','age_upon_intake_months', 'neutered_or_spayed_intake',
+            'male_or_female_intake','color', 'target']
 
     return df
