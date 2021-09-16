@@ -118,7 +118,7 @@ if st.button('Click this button'):
     if x.json()["prediction"] == 0:
         st.success("This animal is likely to stay less than 7 days in the shelter.")
     else:
-        st.error('''
+        st.info('''
         This animal is likely to stay less than 7 days in the shelter. We strongly advise the shelter to:   
         - Take this animal to adoption fairs;   
         - Do more promotion about this animal on social networks;   
