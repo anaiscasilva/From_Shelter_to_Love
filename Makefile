@@ -65,7 +65,7 @@ streamlit:
 heroku_login:
 	-@heroku login
 
-APP_NAME = From_Shelter_to_Love
+APP_NAME = from-shelter-to-love
 
 heroku_create_app:
 	-@heroku create ${APP_NAME}
