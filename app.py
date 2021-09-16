@@ -79,7 +79,7 @@ col1, col2, col3, col4, col5, col6 = st.columns((0.7,0.7,1,1,1,1))
 
 years = col1.number_input('Years',min_value = 0, max_value = 25,step=1,value=0)
 
-months = col2.number_input('Months',min_value = 1, max_value = 11,step=1,value=1)
+months = col2.number_input('Months',min_value = 0, max_value = 11,step=1,value=1)
 
 age_upon_intake_months = years * 12 + months
 
