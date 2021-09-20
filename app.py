@@ -5,7 +5,8 @@ st.set_page_config(
     page_title = 'From Shelter to Love',
     page_icon = '🐶',
     layout = 'wide', #centered
-    initial_sidebar_state = 'auto' # collapsed
+    initial_sidebar_state = 'auto', # collapsed
+
 )
 
 # ----------------------------------
@@ -39,6 +40,7 @@ CSS_cat = """
 '''
 # 🐶 From Shelter to Love 🐱
 '''
+
 
 #Sub-Title
 
@@ -109,7 +111,7 @@ st.write(f"### Please press the button to check if the animal will stay longer t
 
 url = 'https://fromsheltertolove-cs45mhffva-ew.a.run.app/predict'
 
-if st.button('Click this button'):
+if st.button('Click here'):
     if choose == '':
         st.warning('You need to specify the animal type first!')
     else:
@@ -125,10 +127,10 @@ if st.button('Click this button'):
 
         x = requests.get(url, params=params)
         if x.json()["prediction"] == 0:
-            st.success("This animal is likely to stay less than 7 days in the shelter.")
+            st.success("This animal is likely to stay longer than 7 days in the shelter.")
         else:
             st.info('''
-            This animal is likely to stay less than 7 days in the shelter. We strongly advise the shelter to:   
+            This animal is likely to stay more than 7 days in the shelter. We strongly advise the shelter to:   
             - Take this animal to adoption fairs;   
             - Do more promotion about this animal on social networks;   
             - Try to show more information about this animal;   
