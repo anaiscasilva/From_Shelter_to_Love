@@ -127,10 +127,10 @@ if st.button('Click here'):
 
         x = requests.get(url, params=params)
         if x.json()["prediction"] == 0:
-            st.success("This animal is likely to stay longer than 7 days in the shelter.")
+            st.success("This animal is likely to stay less than 7 days in the shelter.")
         else:
             st.info('''
-            This animal is likely to stay more than 7 days in the shelter. We strongly advise the shelter to:   
+            This animal is likely to stay longer than 7 days in the shelter. We strongly advise the shelter to:   
             - Take this animal to adoption fairs;   
             - Do more promotion about this animal on social networks;   
             - Try to show more information about this animal;   
