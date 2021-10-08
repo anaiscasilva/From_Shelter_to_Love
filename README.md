@@ -1,13 +1,10 @@
 # From Shelter to Love
+How long do stray animals spend in a shelter until they find a “forever home”?
 
-[![From Shelter to Love](https://user-images.githubusercontent.com/86983252/136600407-bf892a49-34a9-4d81-bb3b-6c948ec1cb30.PNG)](https://from-shelter-to-love.herokuapp.com/)
+With `from_shelter_to_love` lets help the staff to understand if a dog or cat will stay more than 1 week in their shelter.
 
-- Document here the project: From_Shelter_to_Love
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+[![From Shelter to Love](from_shelter.PNG)](https://from-shelter-to-love.herokuapp.com/)
 
-Please document the project the better you can.
 
 # Startup the project
 
